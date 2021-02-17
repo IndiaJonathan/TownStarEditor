@@ -1,16 +1,17 @@
 <template>
   <div id="app">
+    <craft-item
+      :CityPoints=3
+      Name="Test"
+    />
   </div>
 </template>
 
 <script>
+import CraftItem from './components/CraftItem.vue'
 export default {
-  name: 'App',
-  data () {
-    return {
-
-    }
-  }
+  components: { CraftItem },
+  name: 'App'
 }
 </script>
 
