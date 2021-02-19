@@ -5,9 +5,12 @@
   "author": "Jonathan <IndiaJonathan@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
-    "debug": "node --debug-brk main.js",
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js  && node --inspect-brk main.js",
+    "debug": "webpack && node --inspect--brk=8080 main.js",
+    "start4": "NODE_PATH=./src DEBUG=express:* NODE_ENV=dev nodemon -w src --ext ts --exec node --inspect -r tsconfig-paths/register -r ts-node/register src/index.ts",
+    "testDebug": "NODE_ENV=test ts-mocha --debug-brk=8080 --paths -p tsconfig.json",
     "start": "npm run dev",
+    "start2":"webpack && node --inspect--brk=8080 app.js",
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js"
   },

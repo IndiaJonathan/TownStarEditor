@@ -1,17 +1,30 @@
 <template>
   <div id="app">
-    <craft-item
-      :CityPoints=3
-      Name="Test"
-    />
   </div>
 </template>
 
 <script>
+// v-for="craftItem in craftItems" :key=craftItem.
 import CraftItem from './components/CraftItem.vue'
+import CraftItemList from './components/CraftItemList.vue'
+import TownStarDataService from './services/TownStarDataService.js'
 export default {
-  components: { CraftItem },
-  name: 'App'
+  components: { CraftItem, CraftItemList },
+  name: 'App',
+  data () {
+    return {
+      craftItems: []
+    }
+  },
+  methods: {
+    async getCrafts () {
+      const response = await TownStarDataService.getCrafts()
+      console.log(response.data)
+    }
+  },
+  mounted () {
+    this.craftItems = this.getCrafts()
+  }
 }
 </script>
 

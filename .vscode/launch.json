@@ -5,47 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/client/src/main.js",
+            "name": "Launch Chrome",
             "request": "launch",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "pwa-node"
-        },
-        {
-            "name": "Launch via NPM",
-            "request": "launch",
-            "runtimeArgs": [
-                "run-script",
-                "debug"
-            ],
-            "runtimeExecutable": "npm",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "pwa-node"
-        },
-
-        {
-            "name": "Attach",
-            "port": 9229,
-            "request": "attach",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "pwa-node"
-        },
-        {
-            "name": "Attach to Process",
-            "type": "node",
-            "protocol": "inspector",
-            "request": "attach",
-            "stopOnEntry": false,
-            "port": 8080,
-            "localRoot": "${workspaceRoot}\\client",
-            "remoteRoot": "C:/Users/india.DESKTOP-GVSE8BD/Documents/GitHub/TownStarEditor/client",
-            "sourceMaps": true
+            "type": "pwa-chrome",
+            "url": "http://localhost:8080",
+            "webRoot": "${workspaceFolder}/client"
         }
     ]
 }
