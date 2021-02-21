@@ -1,10 +1,12 @@
 <template>
  <b-container>
   <b-row align-v = "center">
-        <craft-item
+    <div v-for="(craftItem, index) in craftItems" :key="index">
+      <craft-item v-for="{craft} in craftItems" :key="craft"
             :CityPoints=3
-            Name="Test"
+            :Name=craft.name
             />
+    </div>
   </b-row>
 </b-container>
 </template>
@@ -21,7 +23,7 @@ export default {
     }
   },
   props: {
-    CraftItems: {
+    craftItems: {
       required: true
     }
   }
