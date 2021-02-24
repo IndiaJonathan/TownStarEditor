@@ -1,5 +1,9 @@
 <template>
   <div id="app">
+    <h1> Test </h1>
+    <craft-item-list
+      :craftItems="craftItems"
+    />
   </div>
 </template>
 
@@ -19,11 +23,11 @@ export default {
   methods: {
     async getCrafts () {
       const response = await TownStarDataService.getCrafts()
-      console.log(response.data)
+      this.craftItems = response.data.message
     }
   },
   mounted () {
-    this.craftItems = this.getCrafts()
+    this.getCrafts()
   }
 }
 </script>

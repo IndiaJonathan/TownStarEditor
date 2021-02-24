@@ -1,8 +1,8 @@
 <template>
   <b-card
-    :title=Name>
+    :title="craftItem.Name">
     <b-card-text>
-      City Points: {{CityPoints}}
+      City Points: {{craftItem.CityPoints}}
     </b-card-text>
   </b-card>
 </template>
@@ -20,12 +20,7 @@ export default {
   mounted () {
   },
   props: {
-    CityPoints: {
-      type: Number,
-      required: true
-    },
-    Name: {
-      type: String,
+    craftItem: {
       required: true
     }
   }
