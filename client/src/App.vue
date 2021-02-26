@@ -24,10 +24,21 @@ export default {
     async getCrafts () {
       const response = await TownStarDataService.getCrafts()
       this.craftItems = response.data.message
+      console.log(this.craftClasses)
     }
   },
   mounted () {
     this.getCrafts()
+    console.log(this.reversedMessage)
+  },
+  computed: {
+    craftClasses: function () {
+      const craftClasses = new Set()
+      for (var craft in this.craftItems) {
+        craftClasses.add(this.craftItems[craft].Class)
+      }
+      return craftClasses
+    }
   }
 }
 </script>
