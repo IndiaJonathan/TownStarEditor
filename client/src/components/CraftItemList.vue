@@ -1,7 +1,7 @@
 <template>
  <b-container>
   <b-row align-v = "center">
-      <craft-item v-for="craft in craftItems" :key="craft.name" :craftItem="craft"/>
+      <craft-item v-for="craft in craftItems" :key="craft.name" :craftItem="craft" :craftClasses="craftClasses"/>
   </b-row>
 </b-container>
 </template>
@@ -19,6 +19,9 @@ export default {
   },
   props: {
     craftItems: {
+      required: true
+    },
+    craftClasses: {
       required: true
     }
   }
