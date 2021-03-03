@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-      <b-button id="show-btn" @click="$bvModal.show('bv-modal-example')">Open Modal</b-button>
+      <b-button id="show-btn" @click="$bvModal.show('bv-modal-example2')">Open Modal</b-button>
 
     <h1> Test </h1>
     <div class="color-picker">
@@ -10,7 +10,7 @@
       :craftClasses="craftClasses"
     />
 
-    <b-modal id="bv-modal-example" hide-footer size="sm" title="Colour Picker (Yes, we're using the British spelling)">
+        <b-modal id="bv-modal-example2" hide-footer size="sm" title="Colour Picker (Yes, we're using the British spelling)">
     <b-container fluid>
         <b-row>
           <b-col align-self="center">
@@ -18,8 +18,9 @@
           </b-col>
     </b-row>
     </b-container>
-    <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')">Close Me</b-button>
+    <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example2')">Close Me</b-button>
   </b-modal>
+
   </div>
 </template>
 
@@ -28,11 +29,11 @@
 import CraftItem from './components/CraftItem.vue'
 import CraftItemList from './components/CraftItemList.vue'
 import TownStarDataService from './services/TownStarDataService.js'
-import { Chrome } from 'vue-color'
+import { Photoshop } from 'vue-color'
 var colors = '#194D33A8'
 
 export default {
-  components: { CraftItem, CraftItemList, 'photoshop-picker': Chrome },
+  components: { CraftItem, CraftItemList, 'photoshop-picker': Photoshop },
   name: 'App',
   data () {
     return {

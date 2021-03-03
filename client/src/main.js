@@ -9,8 +9,11 @@ import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import { Chrome } from 'vue-color'
+
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
+Vue.component('photoshop-picker', Chrome)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

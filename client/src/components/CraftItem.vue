@@ -2,8 +2,8 @@
   <b-card
     :title="craftItem.Name">
     <b-container fluid>
-      <b-row class="cityPointsContainer" >
-        <b-col sm="4">
+      <b-row class="cityPointsContainer" align-v="center">
+        <b-col sm="5">
           <label> City Points: </label>
         </b-col>
         <b-col sm="5">
@@ -14,8 +14,8 @@
         </b-col>
       </b-row>
 
-      <b-row class="cityPriceContainer" >
-        <b-col sm="4">
+      <b-row class="cityPriceContainer" align-v="center">
+        <b-col sm="5">
           <label> City Price: </label>
         </b-col>
         <b-col sm="5">
@@ -26,8 +26,8 @@
         </b-col>
       </b-row>
 
-      <b-row class="craftClassContainer" >
-        <b-col sm="4">
+      <b-row class="craftClassContainer" align-v="center" >
+        <b-col sm="5">
           <label> Class: </label>
         </b-col>
         <b-col sm="5">
@@ -38,8 +38,8 @@
         </b-col>
       </b-row>
 
-      <b-row class="craftTextContainer" >
-        <b-col sm="4">
+      <b-row class="craftTextContainer" align-v="center">
+        <b-col sm="5">
           <label> Crafting Text: </label>
         </b-col>
         <b-col sm="5">
@@ -50,24 +50,24 @@
         </b-col>
       </b-row>
 
-      <b-row class="craftHexColour" >
-        <b-col sm="4">
-          <label> Crafting Hex Colour: </label>
+      <b-row class="craftHexColour" align-v="center" >
+        <b-col sm="5">
+          <label> Crafting Colour: </label>
         </b-col>
         <b-col sm="5">
-          <div :style="{'background-color': this.colors}"> b </div>
+          <div @click="$bvModal.show('bv-modal-example3')" :style="{'background-color': this.form.hexColor}">&nbsp;</div>
         </b-col>
       </b-row>
 
-    <b-modal id="bv-modal-example" hide-footer size="sm" title="Colour Picker (Yes, we're using the British spelling)">
+    <b-modal id="bv-modal-example3" hide-footer size="sm" title="Colour Picker (Yes, we're using the British spelling)">
     <b-container fluid>
         <b-row>
           <b-col align-self="center">
-    <photoshop-picker v-model="colors" align-v="center" />
+    <photoshop-picker v-model="this.form.hexColor" align-v="center" />
           </b-col>
     </b-row>
     </b-container>
-    <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')">Close Me</b-button>
+    <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example3')">Close Me</b-button>
   </b-modal>
     </b-container>
 
@@ -75,7 +75,8 @@
 </template>
 
 <script>
-var colors = '#194D33A8'
+import { Photoshop } from 'vue-color'
+var colors = '#FFD806'
 
 export default {
   data () {
@@ -91,13 +92,16 @@ export default {
     }
   },
   methods: {
+    changeColor () {
+      console.log('activated')
+    }
   },
   mounted () {
     this.form.cityPoints = this.craftItem.CityPoints
     this.form.cityPrice = this.craftItem.CityPrice
     this.form.class = this.craftItem.Class
     this.form.craftingText = this.craftItem.CraftingText
-    this.form.hexColor = this.craftItem.HexColor
+    this.form.hexColor = '#' + this.craftItem.HexColor
   },
   props: {
     craftItem: {
@@ -105,6 +109,9 @@ export default {
     },
     craftClasses: {
       required: true
+    },
+    components: {
+      'photoshop-picker': Photoshop
     }
   }
 }
