@@ -1,7 +1,7 @@
 <template>
  <b-container>
   <b-row align-v = "center">
-      <craft-item v-for="craft in craftItems" :key="craft.name" :craftItem="craft" :craftClasses="craftClasses"/>
+      <craft-item v-for="craft in craftItems" :key="craft.name" :craftItem="craft" :craftClasses="craftClasses" @select-color="openColorPicker"/>
   </b-row>
 </b-container>
 </template>
@@ -23,6 +23,11 @@ export default {
     },
     craftClasses: {
       required: true
+    }
+  },
+  methods: {
+    openColorPicker (craftName) {
+      this.$emit('select-color', craftName)
     }
   }
 }

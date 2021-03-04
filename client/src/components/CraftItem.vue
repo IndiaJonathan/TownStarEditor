@@ -55,11 +55,11 @@
           <label> Crafting Colour: </label>
         </b-col>
         <b-col sm="5">
-          <div @click="$bvModal.show('bv-modal-example3')" :style="{'background-color': this.form.hexColor}">&nbsp;</div>
+          <div @click="openColorPicker()" :style="{'background-color': this.form.hexColor}">&nbsp;</div>
         </b-col>
       </b-row>
 
-    <b-modal id="bv-modal-example3" hide-footer size="sm" title="Colour Picker (Yes, we're using the British spelling)">
+    <b-modal :id="'bv-modal-example3' + craftItem.id" hide-footer size="sm" title="Colour Picker (Yes, we're using the British spelling)">
     <b-container fluid>
         <b-row>
           <b-col align-self="center">
@@ -67,7 +67,7 @@
           </b-col>
     </b-row>
     </b-container>
-    <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example3')">Close Me</b-button>
+    <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example3' + craftItem.id)">Close Me</b-button>
   </b-modal>
     </b-container>
 
@@ -75,25 +75,27 @@
 </template>
 
 <script>
-import { Photoshop } from 'vue-color'
 var colors = '#FFD806'
 
 export default {
   data () {
     return {
+      colors,
       form: {
         cityPoints: -1,
         CityPrice: -1,
         class: null,
         craftingText: '',
         hexColor: null
-      },
-      colors
+      }
     }
   },
   methods: {
     changeColor () {
       console.log('activated')
+    },
+    openColorPicker () {
+      this.$emit('select-color', this.craftItem.Name)
     }
   },
   mounted () {
@@ -109,9 +111,6 @@ export default {
     },
     craftClasses: {
       required: true
-    },
-    components: {
-      'photoshop-picker': Photoshop
     }
   }
 }

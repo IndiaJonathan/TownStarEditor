@@ -8,13 +8,14 @@
     <craft-item-list
       :craftItems="craftItems"
       :craftClasses="craftClasses"
+      @select-color="openColorPicker"
     />
 
         <b-modal id="bv-modal-example2" hide-footer size="sm" title="Colour Picker (Yes, we're using the British spelling)">
     <b-container fluid>
         <b-row>
           <b-col align-self="center">
-    <photoshop-picker v-model="colors" align-v="center" />
+    <photoshop-picker v-model="selectedCraftItem.color" align-v="center" />
           </b-col>
     </b-row>
     </b-container>
@@ -30,7 +31,6 @@ import CraftItem from './components/CraftItem.vue'
 import CraftItemList from './components/CraftItemList.vue'
 import TownStarDataService from './services/TownStarDataService.js'
 import { Photoshop } from 'vue-color'
-var colors = '#194D33A8'
 
 export default {
   components: { CraftItem, CraftItemList, 'photoshop-picker': Photoshop },
@@ -38,17 +38,30 @@ export default {
   data () {
     return {
       craftItems: [],
-      colors
+      originalItems: [],
+      selectedCraftItem: {
+        name: '',
+        color: null
+
+      }
     }
   },
   methods: {
     async getCrafts () {
       const response = await TownStarDataService.getCrafts()
       this.craftItems = response.data.message
+      this.originalItems = response.data.message
       console.log(this.craftClasses)
     },
     onOk () {
       console.log('ok')
+    },
+    openColorPicker (craftName) {
+      this.selectedCraftItem = {
+        name: craftName,
+        color: this.craftItems[craftName].HexColor
+      }
+      this.$bvModal.show('bv-modal-example2')
     }
   },
   mounted () {
