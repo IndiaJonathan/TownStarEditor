@@ -55,38 +55,28 @@
           <label> Crafting Colour: </label>
         </b-col>
         <b-col sm="5">
-          <div @click="openColorPicker()" :style="{'background-color': this.form.hexColor}">&nbsp;</div>
+          <div @click="openColorPicker()" v-bind:style="styleObject">&nbsp;</div>
         </b-col>
       </b-row>
-
-    <b-modal :id="'bv-modal-example3' + craftItem.id" hide-footer size="sm" title="Colour Picker (Yes, we're using the British spelling)">
-    <b-container fluid>
-        <b-row>
-          <b-col align-self="center">
-    <photoshop-picker v-model="this.form.hexColor" align-v="center" />
-          </b-col>
-    </b-row>
-    </b-container>
-    <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example3' + craftItem.id)">Close Me</b-button>
-  </b-modal>
     </b-container>
 
   </b-card>
 </template>
 
 <script>
-var colors = '#FFD806'
 
 export default {
   data () {
     return {
-      colors,
       form: {
         cityPoints: -1,
         CityPrice: -1,
         class: null,
         craftingText: '',
-        hexColor: null
+        hexColor: 'red'
+      },
+      styleObject: {
+        backgroundColor: 'red'
       }
     }
   },
@@ -104,6 +94,8 @@ export default {
     this.form.class = this.craftItem.Class
     this.form.craftingText = this.craftItem.CraftingText
     this.form.hexColor = '#' + this.craftItem.HexColor
+
+    this.styleObject.backgroundColor = '#' + this.craftItem.HexColor
   },
   props: {
     craftItem: {
@@ -111,6 +103,12 @@ export default {
     },
     craftClasses: {
       required: true
+    }
+  },
+  watch: {
+    'craftItem.HexColor': function (newValue, oldvalue) {
+      this.form.hexColor = '#' + this.craftItem.HexColor
+      this.styleObject.backgroundColor = '#' + this.craftItem.HexColor
     }
   }
 }

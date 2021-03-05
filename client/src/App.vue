@@ -1,25 +1,24 @@
 <template>
   <div id="app">
-      <b-button id="show-btn" @click="$bvModal.show('bv-modal-example2')">Open Modal</b-button>
-
     <h1> Test </h1>
-    <div class="color-picker">
-        </div>
+    <b-button @click="save()"> Save Changes </b-button>
     <craft-item-list
       :craftItems="craftItems"
       :craftClasses="craftClasses"
       @select-color="openColorPicker"
     />
 
-        <b-modal id="bv-modal-example2" hide-footer size="sm" title="Colour Picker (Yes, we're using the British spelling)">
-    <b-container fluid>
+        <b-modal id="bv-modal-example2" hide-footer size="sm" v-b-tooltip.hover title="Colour Picker">
+
+    <b-container fluid v-b-tooltip.hover title="(Yes, we're using the British spelling)">
         <b-row>
           <b-col align-self="center">
     <photoshop-picker v-model="selectedCraftItem.color" align-v="center" />
           </b-col>
     </b-row>
     </b-container>
-    <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example2')">Close Me</b-button>
+    <b-button class="mt-3" block @click="saveColorPicker()">Close Me</b-button>
+    <b-button class="mt-3" block @click="closeColorPicker()">Cancel</b-button>
   </b-modal>
 
   </div>
@@ -30,10 +29,10 @@
 import CraftItem from './components/CraftItem.vue'
 import CraftItemList from './components/CraftItemList.vue'
 import TownStarDataService from './services/TownStarDataService.js'
-import { Photoshop } from 'vue-color'
+import { Chrome } from 'vue-color'
 
 export default {
-  components: { CraftItem, CraftItemList, 'photoshop-picker': Photoshop },
+  components: { CraftItem, CraftItemList, 'photoshop-picker': Chrome },
   name: 'App',
   data () {
     return {
@@ -62,6 +61,16 @@ export default {
         color: this.craftItems[craftName].HexColor
       }
       this.$bvModal.show('bv-modal-example2')
+    },
+    saveColorPicker () {
+      this.craftItems[this.selectedCraftItem.name].HexColor = this.selectedCraftItem.color.hex.slice(1)
+      this.closeColorPicker()
+    },
+    closeColorPicker () {
+      this.$bvModal.hide('bv-modal-example2')
+    },
+    save () {
+      console.log('save')
     }
   },
   mounted () {
