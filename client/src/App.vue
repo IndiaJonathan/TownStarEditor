@@ -1,15 +1,38 @@
 <template>
-  <div id="app">
-    <h1> Test </h1>
-    <b-button @click="save()"> Save Changes </b-button>
-    <craft-item-list
-      :craftItems="craftItems"
-      :craftClasses="craftClasses"
-      @select-color="openColorPicker"
-    />
+  <div class = "app">
+     <b-navbar toggleable="lg" type="dark" variant="info">
+        <b-navbar-nav>
+      <!-- Navbar dropdowns -->
+      <b-nav-item-dropdown text="File">
+    <b-dropdown-item-button @click="onNewFile">Create New Edit From Default</b-dropdown-item-button>
+    <b-dropdown-item-button @click="onSelectFile">Open Edit</b-dropdown-item-button>
+      </b-nav-item-dropdown>
+        </b-navbar-nav>
+  </b-navbar>
 
-        <b-modal id="bv-modal-example2" hide-footer size="sm" v-b-tooltip.hover title="Colour Picker">
+  <div class = "content">
 
+    <div class = "header">
+      <b-container fluid>
+          <b-row>
+             <b-col sm="3">
+                <b-form-input v-model="filename" placeholder="Unnamed File"></b-form-input>
+             </b-col>
+              <b-col sm="3">
+                <b-button @click="save()"> Save Changes </b-button>
+              </b-col>
+          </b-row>
+      </b-container>
+    </div>
+
+      <craft-item-list
+        :craftItems="craftItems"
+        :craftClasses="craftClasses"
+        @select-color="openColorPicker"
+      />
+  </div>
+
+  <b-modal id="bv-modal-example2" hide-footer size="sm" v-b-tooltip.hover title="Colour Picker">
     <b-container fluid v-b-tooltip.hover title="(Yes, we're using the British spelling)">
         <b-row>
           <b-col align-self="center">
@@ -20,6 +43,17 @@
     <b-button class="mt-3" block @click="saveColorPicker()">Close Me</b-button>
     <b-button class="mt-3" block @click="closeColorPicker()">Cancel</b-button>
   </b-modal>
+
+  <b-modal id="modal-select-file" hide-footer size="sm" v-b-tooltip.hover title="Select A File">
+      <b-list-group>
+        <b-list-group-item v-for="file in availableFiles" :key="file"
+        v-bind:class="{ 'active' : isSelected(file) }"
+        v-on:click="selected = file"
+        >{{file}}
+        </b-list-group-item>
+      </b-list-group>
+    <b-button class="mt-3" block @click="openFile(selected)">Open</b-button>
+  </b-modal>`
 
   </div>
 </template>
@@ -36,13 +70,16 @@ export default {
   name: 'App',
   data () {
     return {
+      availableFiles: [],
       craftItems: [],
       originalItems: [],
       selectedCraftItem: {
         name: '',
         color: null
 
-      }
+      },
+      selected: 0,
+      filename: null
     }
   },
   methods: {
@@ -50,10 +87,31 @@ export default {
       const response = await TownStarDataService.getCrafts()
       this.craftItems = response.data.message
       this.originalItems = response.data.message
+      this.filename = null
       console.log(this.craftClasses)
     },
-    onOk () {
-      console.log('ok')
+    async getFiles () {
+      const response = await TownStarDataService.getFiles()
+      this.availableFiles = response.data.message
+    },
+    onNewFile () {
+      this.getCrafts()
+    },
+    onSelectFile () {
+      this.$bvModal.show('modal-select-file')
+    },
+    async openFile (filename) {
+      try {
+        const response = await TownStarDataService.getSavedFile(filename)
+        this.craftItems = response.data.message
+        this.originalItems = response.data.message
+        this.selected = null
+        this.filename = filename
+        this.$bvModal.hide('modal-select-file')
+      } catch (e) {
+        this.makeErrorToast('Cannot Open File!')
+        console.log('Cannot open file! ' + e)
+      }
     },
     openColorPicker (craftName) {
       this.selectedCraftItem = {
@@ -69,13 +127,25 @@ export default {
     closeColorPicker () {
       this.$bvModal.hide('bv-modal-example2')
     },
-    save () {
-      console.log('save')
+    async save () {
+      const response = await TownStarDataService.saveCraft(this.filenameWithExt, this.craftItems)
+      this.getFiles() // Refresh files now that another should be created
+      console.log(response)
+    },
+    isSelected (i) {
+      return i === this.selected
+    },
+    makeErrorToast (message) {
+      this.$bvToast.toast(message, {
+        title: 'Error',
+        autoHideDelay: 5000,
+        appendToast: false
+      })
     }
   },
   mounted () {
+    this.getFiles()
     this.getCrafts()
-    console.log(this.reversedMessage)
   },
   computed: {
     craftClasses: function () {
@@ -84,6 +154,13 @@ export default {
         craftClasses.add(this.craftItems[craft].Class)
       }
       return Array.from(craftClasses)
+    },
+    filenameWithExt: function () {
+      if (this.filename.endsWith('.json')) {
+        return this.filename
+      } else {
+        return this.filename + '.json'
+      }
     }
   }
 }
@@ -97,5 +174,13 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.app {
+}
+.header{
+  padding-top: 25px;
+  padding-bottom: 25px;
+  padding-right: 10px;
+  padding-left: 10px;
 }
 </style>

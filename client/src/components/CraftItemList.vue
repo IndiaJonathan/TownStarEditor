@@ -1,9 +1,8 @@
 <template>
- <b-container>
-  <b-row align-v = "center">
-      <craft-item v-for="craft in craftItems" :key="craft.name" :craftItem="craft" :craftClasses="craftClasses" @select-color="openColorPicker"/>
-  </b-row>
-</b-container>
+ <b-card-group columns>
+      <craft-item v-for="craft in craftItems" :key="craft.name" :craftItem="craft" :craftClasses="craftClasses"
+       @select-color="openColorPicker"/>
+</b-card-group >
 </template>
 
 <script>

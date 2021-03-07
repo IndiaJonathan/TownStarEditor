@@ -1,6 +1,7 @@
 <template>
   <b-card
     :title="craftItem.Name">
+    <b-card-body>
     <b-container fluid>
       <b-row class="cityPointsContainer" align-v="center">
         <b-col sm="5">
@@ -8,7 +9,7 @@
         </b-col>
         <b-col sm="5">
           <b-form-input
-            v-model="form.cityPoints"
+            v-model="form.CityPoints"
             type="number">
           </b-form-input>
         </b-col>
@@ -20,7 +21,7 @@
         </b-col>
         <b-col sm="5">
           <b-form-input
-            v-model="form.cityPrice"
+            v-model="form.CityPrice"
             type="number">
           </b-form-input>
         </b-col>
@@ -32,7 +33,7 @@
         </b-col>
         <b-col sm="5">
           <b-form-select
-            v-model="form.class"
+            v-model="form.Class"
             :options="craftClasses">
           </b-form-select>
         </b-col>
@@ -44,7 +45,7 @@
         </b-col>
         <b-col sm="5">
           <b-form-input
-            v-model="form.craftingText"
+            v-model="form.CraftingText"
             type="text">
           </b-form-input>
         </b-col>
@@ -59,7 +60,7 @@
         </b-col>
       </b-row>
     </b-container>
-
+  </b-card-body>
   </b-card>
 </template>
 
@@ -69,11 +70,12 @@ export default {
   data () {
     return {
       form: {
-        cityPoints: -1,
+        Name: 'Temp',
+        CityPoints: -1,
         CityPrice: -1,
-        class: null,
-        craftingText: '',
-        hexColor: 'red'
+        Class: null,
+        CraftingText: '',
+        HexColor: 'red'
       },
       styleObject: {
         backgroundColor: 'red'
@@ -81,19 +83,12 @@ export default {
     }
   },
   methods: {
-    changeColor () {
-      console.log('activated')
-    },
     openColorPicker () {
       this.$emit('select-color', this.craftItem.Name)
     }
   },
   mounted () {
-    this.form.cityPoints = this.craftItem.CityPoints
-    this.form.cityPrice = this.craftItem.CityPrice
-    this.form.class = this.craftItem.Class
-    this.form.craftingText = this.craftItem.CraftingText
-    this.form.hexColor = '#' + this.craftItem.HexColor
+    this.form = this.craftItem
 
     this.styleObject.backgroundColor = '#' + this.craftItem.HexColor
   },
@@ -107,8 +102,10 @@ export default {
   },
   watch: {
     'craftItem.HexColor': function (newValue, oldvalue) {
-      this.form.hexColor = '#' + this.craftItem.HexColor
       this.styleObject.backgroundColor = '#' + this.craftItem.HexColor
+    },
+    'craftItem': function (newValue, oldvalue) {
+      this.form = newValue
     }
   }
 }
