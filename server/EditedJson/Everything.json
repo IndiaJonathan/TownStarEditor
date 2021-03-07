@@ -1,6 +1,6 @@
 {
   "Baguette": {
-    "CityPoints": 1472,
+    "CityPoints": "1472897987",
     "CityPrice": 91300,
     "Class": "Crafted",
     "CraftingText": "Baking",
@@ -8,7 +8,7 @@
     "Id": 3000,
     "Name": "Baguette",
     "OnDestroy": "Baguette_VFX",
-    "ProximityBonus": "Water,Energy,None,Cotton,Crude_Oil",
+    "ProximityBonus": "Water_Drum,Energy,Water,Cotton,Crude_Oil,Wheat,Sugarcane",
     "ProximityPenalty": "None",
     "ProximityReverse": false,
     "Req1": "Dough",

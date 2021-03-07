@@ -28,6 +28,7 @@
       <craft-item-list
         :craftItems="craftItems"
         :craftClasses="craftClasses"
+        :proximityBonusOptions="proximityBonusOptions"
         @select-color="openColorPicker"
       />
   </div>
@@ -88,7 +89,6 @@ export default {
       this.craftItems = response.data.message
       this.originalItems = response.data.message
       this.filename = null
-      console.log(this.craftClasses)
     },
     async getFiles () {
       const response = await TownStarDataService.getFiles()
@@ -111,6 +111,7 @@ export default {
       } catch (e) {
         this.makeErrorToast('Cannot Open File!')
         console.log('Cannot open file! ' + e)
+        this.getFiles() // Refresh file list
       }
     },
     openColorPicker (craftName) {
@@ -128,9 +129,13 @@ export default {
       this.$bvModal.hide('bv-modal-example2')
     },
     async save () {
-      const response = await TownStarDataService.saveCraft(this.filenameWithExt, this.craftItems)
-      this.getFiles() // Refresh files now that another should be created
-      console.log(response)
+      if (this.filename) {
+        const response = await TownStarDataService.saveCraft(this.filenameWithExt, this.craftItems)
+        this.getFiles() // Refresh files now that another should be created
+        console.log(response)
+      } else {
+        this.makeErrorToast('Please Input A File Name!')
+      }
     },
     isSelected (i) {
       return i === this.selected
@@ -139,7 +144,8 @@ export default {
       this.$bvToast.toast(message, {
         title: 'Error',
         autoHideDelay: 5000,
-        appendToast: false
+        appendToast: false,
+        variant: 'danger'
       })
     }
   },
@@ -154,6 +160,19 @@ export default {
         craftClasses.add(this.craftItems[craft].Class)
       }
       return Array.from(craftClasses)
+    },
+    proximityBonusOptions: function () {
+      const proximityBonusOptions = new Set()
+      for (var craft in this.craftItems) {
+        let proximityBonuses = this.craftItems[craft].ProximityBonus.split(',')
+        for (var proximityBonus in proximityBonuses) {
+          if (!(proximityBonuses[proximityBonus] === 'None')) {
+            // Don't add none to the list, that should be set if there are no selections
+            proximityBonusOptions.add(proximityBonuses[proximityBonus])
+          }
+        }
+      }
+      return Array.from(proximityBonusOptions)
     },
     filenameWithExt: function () {
       if (this.filename.endsWith('.json')) {

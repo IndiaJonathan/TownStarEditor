@@ -31,8 +31,6 @@ app.use(cors());
 
 // Initialize watcher for any external file changes (should be an edge case)
 const watcher = chokidar.watch(editPath, { persistent: true });
- 
-// Add event listeners.
 watcher
   .on('add', path => {
       if (watcherStarted){
@@ -106,6 +104,6 @@ function refreshFiles(){
     files = fs.readdirSync(editPath);
     //listing all files using forEach
     files.forEach(function (file) {
-        console.log(file); 
+        console.log("Edited File Found: " + file); 
     });
 }

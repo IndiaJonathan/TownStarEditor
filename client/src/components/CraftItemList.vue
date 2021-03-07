@@ -1,6 +1,8 @@
 <template>
  <b-card-group columns>
-      <craft-item v-for="craft in craftItems" :key="craft.name" :craftItem="craft" :craftClasses="craftClasses"
+      <craft-item v-for="craft in craftItems" :key="craft.name" :craftItem="craft"
+      :craftClasses="craftClasses"
+      :proximityBonusOptions="proximityBonusOptions"
        @select-color="openColorPicker"/>
 </b-card-group >
 </template>
@@ -12,8 +14,6 @@ export default {
   components: { CraftItem },
   data () {
     return {
-      perPage: 3,
-      currentPage: 1
     }
   },
   props: {
@@ -21,6 +21,9 @@ export default {
       required: true
     },
     craftClasses: {
+      required: true
+    },
+    proximityBonusOptions: {
       required: true
     }
   },
